@@ -27,8 +27,8 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
-    "@material-ui/styles": "^4.11.5",
     "react": "^16.14.0",
+    "react-apexcharts": "^1.4.0",
     "react-dom": "^16.14.0",
     "react-scripts": "^5.0.1",
     "webpack": "^3.12.0"

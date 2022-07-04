@@ -1,8 +1,9 @@
 import { StrictMode } from "react";
+import Reports from "./components/Reports/Reports";
 
 const App = () => (
   <StrictMode>
-    <h1>Code will be here"</h1>
+    <Reports />
   </StrictMode>
 );
 
