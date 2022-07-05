@@ -27,6 +27,9 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
+    "@material-ui/pickers": "^3.3.10",
+    "classnames": "^2.3.1",
+    "materialui-daterange-picker": "^1.1.92",
     "react": "^16.14.0",
     "react-apexcharts": "^1.4.0",
     "react-dom": "^16.14.0",

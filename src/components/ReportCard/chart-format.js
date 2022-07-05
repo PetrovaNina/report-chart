@@ -86,6 +86,31 @@ const chartFormat = (colors) => ({
         },
       },
     ],
+    tooltip: {
+      shared: true,
+      followCursor: false,
+      intersect: false,
+      inverseOrder: false,
+      // x: {
+      //   // show: false,
+      // },
+      // y: {
+      //   // format: "dd MMM",
+      //   title: {
+      //     formatter: function (
+      //       value,
+      //       { series, seriesIndex, dataPointIndex, w }
+      //     ) {
+      //       return (
+      //         ", seriesIndex:" +
+      //         seriesIndex +
+      //         ", dataPointIndex:" +
+      //         series[dataPointIndex]
+      //       );
+          // },
+        // },
+      // },
+    },
   },
   series: [
     {
