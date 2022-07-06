@@ -12,7 +12,11 @@ import { format } from "date-fns";
 import cn from "classnames";
 
 import chartFormat from "./chart-format";
-import { getIncrease, roundToDecimals } from "../../utils";
+import {
+  getIncrease,
+  roundToDecimals,
+  addSpacesToThousands,
+} from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -54,8 +58,8 @@ const useStyles = makeStyles((theme) => ({
 const ReportCard = ({
   cardName,
   majorText = [],
-  minorText = [],
-  captures = {},
+  minorText = "",
+  captions = {},
   withPercent = false,
   withLegend = false,
   series,
@@ -64,14 +68,26 @@ const ReportCard = ({
   const s = useStyles();
   const { startDate, endDate } = ranges[0];
 
-  const percentage = getIncrease(majorText[0], minorText[0]);
+  const percentage = getIncrease(majorText[0], minorText);
   const percentageText = !withPercent
     ? false
     : percentage >= 1
     ? Math.round(percentage)
     : roundToDecimals(percentage, 1);
 
+  const prefix = majorText[1];
+
   const theme = useTheme();
+
+  const setFormatedCaption = (arr) =>
+    arr.reduce((acc, cur, i) => {
+      const formated = addSpacesToThousands(cur);
+      acc += i === 0 ? formated + " → " : formated;
+      return acc;
+    }, "");
+
+  const leftCaption = captions.left ? setFormatedCaption(captions.left) : "";
+  const rightCaption = captions.left ? setFormatedCaption(captions.right) : "";
 
   return (
     <Card className={s.card}>
@@ -94,12 +110,10 @@ const ReportCard = ({
               <Typography
                 variant="h4"
                 style={{
-                  color: `${
-                    withLegend && theme.palette.darkBlue
-                  }`,
+                  color: `${withLegend && theme.palette.darkBlue}`,
                 }}
               >
-                {majorText}
+                {addSpacesToThousands(majorText[0]) + prefix}
               </Typography>
               {!!percentageText && (
                 <Typography
@@ -115,16 +129,16 @@ const ReportCard = ({
                   flexGrow: 1,
                   textAlign: "end",
                   color: `${
-                    withLegend ? theme.palette.blueText : theme.palette.grey600 
+                    withLegend ? theme.palette.blueText : theme.palette.grey600
                   }`,
                 }}
               >
-                {minorText}
+                {!!minorText && addSpacesToThousands(minorText) + prefix}
               </Typography>
             </Grid>
             <Grid container className={s.containerCenter}>
-              <Typography variant="caption">{captures.left}</Typography>
-              <Typography variant="caption">{captures.right}</Typography>
+              <Typography variant="caption">{leftCaption}</Typography>
+              <Typography variant="caption">{rightCaption}</Typography>
             </Grid>
             <Grid
               container

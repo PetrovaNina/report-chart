@@ -1,3 +1,5 @@
+import { addSpacesToThousands } from "../../utils";
+
 const chartFormat = (colors, series, withLegend, prefix) => ({
   height: 168,
   type: "bar",
@@ -104,15 +106,15 @@ const chartFormat = (colors, series, withLegend, prefix) => ({
 
         const main = (segment, color) => `<div>
         <span style="color: ${color}">${segment.x}</span>
-        <p>${segment.y}${prefix}</p>
+        <p>${addSpacesToThousands(segment.y)}${prefix}</p>
         ${additional(segment)}
         </div>
         `;
 
         const additional = (segment) =>
           segment.view && segment.click
-            ? `<span>View: ${segment.view}</span><br>
-              <span>Click: ${segment.click}</span><br>`
+            ? `<span>View: ${addSpacesToThousands(segment.view)}</span><br>
+              <span>Click: ${addSpacesToThousands(segment.click)}</span><br>`
             : "";
 
         return `${segment1 ? main(segment1, colors.blueText) : ""} ${

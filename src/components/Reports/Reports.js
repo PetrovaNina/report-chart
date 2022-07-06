@@ -19,7 +19,6 @@ import {
   getDateRangeString,
   formatDataToXY,
   clickThroughRate,
-  getIncrease,
 } from "../../utils";
 
 const useStyles = makeStyles(() => ({
@@ -145,10 +144,7 @@ const Reports = () => {
                 getDataSum(secondRangeData.purchases, "value"),
                 prefix.rub,
               ]}
-              minorText={[
-                getDataSum(firstRangeData.purchases, "value"),
-                prefix.rub,
-              ]}
+              minorText={getDataSum(firstRangeData.purchases, "value")}
               withPercent={true}
               withLegend={true}
               ranges={[secondRange, firstRange]}
@@ -157,13 +153,11 @@ const Reports = () => {
             <ReportCard
               cardName="Баланс"
               majorText={[
-                getDataSum(secondRangeData.purchases, "value") * 2,
+                (getDataSum(secondRangeData.purchases, "value") * 2.5),
                 prefix.rub,
               ]}
-              minorText={[
-                getDataSum(firstRangeData.purchases, "value") * 2,
-                prefix.rub,
-              ]}
+              minorText={getDataSum(firstRangeData.purchases, "value") * 1.5}
+              withPercent={true}
               ranges={[secondRange, firstRange]}
               series={getDateSeries("purchases")}
             />
@@ -182,9 +176,9 @@ const Reports = () => {
                 <ReportCard
                   cardName="Просмотры → Клики"
                   majorText={[Math.round(left.conversion), prefix.percent]}
-                  captures={{
-                    left: `${left.firstSum} → ${left.secondSum}`,
-                    right: `${right.firstSum} → ${right.secondSum}`,
+                  captions={{
+                    left: [left.firstSum, left.secondSum],
+                    right: [right.firstSum, right.secondSum],
                   }}
                   ranges={[secondRange, firstRange]}
                   series={getDateSeries("views_to_clicks", clickThroughRate, [
@@ -208,7 +202,6 @@ const Reports = () => {
               );
               const pseudoPurchaseLeft = Math.round(left.secondSum / 15);
               const pseudoPurchaseRight = Math.round(right.secondSum / 15);
-
               return (
                 <ReportCard
                   cardName="Клики → Продажи"
@@ -218,9 +211,9 @@ const Reports = () => {
                     ),
                     prefix.percent,
                   ]}
-                  captures={{
-                    left: `${left.secondSum} → ${pseudoPurchaseLeft}`,
-                    right: `${right.secondSum} → ${pseudoPurchaseRight}`,
+                  captions={{
+                    left: [left.secondSum, pseudoPurchaseLeft],
+                    right: [right.secondSum, pseudoPurchaseRight],
                   }}
                   ranges={[secondRange, firstRange]}
                   series={getDateSeries("views_to_clicks", clickThroughRate, [
