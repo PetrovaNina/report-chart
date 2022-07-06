@@ -53,6 +53,8 @@ const ReportCard = ({
   const grey600 = theme.palette.grey[600];
   const grey300 = theme.palette.grey[300];
 
+  console.log(series[0].data.length);
+
   return (
     <Card
       style={{
@@ -68,8 +70,11 @@ const ReportCard = ({
         gap: "4px",
       }}
     >
-      {!firstPeriod.data && !secondPeriod.data ? (
-        <Typography variant="caption">{`Нет данных в категории "${cardName}" за указанный период`}</Typography>
+      {!series[0].data.length || !series[1].data.length ? (
+        <Typography
+          variant="caption"
+          style={{ paddingBottom: "16px" }}
+        >{`Невозможно провести сравнение в категории "${cardName}". В одном или обоих периодах нет данных.`}</Typography>
       ) : (
         <>
           <Grid container direction="column">
