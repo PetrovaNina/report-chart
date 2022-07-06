@@ -1,4 +1,4 @@
-const chartFormat = (colors) => ({
+const chartFormat = (colors, series, withLegend) => ({
   height: 168,
   type: "bar",
   width: "100%",
@@ -16,16 +16,18 @@ const chartFormat = (colors) => ({
     },
     chart: {
       id: "bar-chart",
-      offsetX: 0,
       stacked: true,
       toolbar: {
         show: false,
       },
     },
     xaxis: {
-      labels: { show: false },
-      axisTicks: { show: false },
       type: "category",
+      labels: {
+        show: false,
+        format: "D MMM",
+      },
+      axisTicks: { show: false },
       axisBorder: {
         show: true,
         color: colors.grey[400],
@@ -43,12 +45,14 @@ const chartFormat = (colors) => ({
       show: false,
       padding: {
         top: 0,
-        right: 0,
+        right: 2,
         bottom: 0,
-        left: -8,
+        left: 2,
       },
     },
     legend: {
+      show: withLegend,
+      floating: true,
       fontSize: "inherit",
       fontFamily: "inherit",
       fontWeight: "inherit",
@@ -88,39 +92,24 @@ const chartFormat = (colors) => ({
     ],
     tooltip: {
       shared: true,
-      followCursor: false,
       intersect: false,
-      inverseOrder: false,
-      // x: {
-      //   // show: false,
-      // },
-      // y: {
-      //   // format: "dd MMM",
-      //   title: {
-      //     formatter: function (
-      //       value,
-      //       { series, seriesIndex, dataPointIndex, w }
-      //     ) {
-      //       return (
-      //         ", seriesIndex:" +
-      //         seriesIndex +
-      //         ", dataPointIndex:" +
-      //         series[dataPointIndex]
-      //       );
-          // },
-        // },
-      // },
+      x: {
+        show: false,
+      },
+      y: {
+        title: {
+          formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+            return `${
+              w.globals.seriesX[seriesIndex][dataPointIndex]
+            } ${val.slice(-4)}`;
+          },
+        },
+      },
+      marker: {
+        show: false,
+      },
     },
   },
-  series: [
-    {
-      name: "1 - 30 июня 2022",
-      data: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100)),
-    },
-    {
-      name: "1 - 30 июля 2022",
-      data: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100)),
-    },
-  ],
+  series: series,
 });
 export default chartFormat;

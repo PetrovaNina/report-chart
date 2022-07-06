@@ -19,9 +19,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function RangePicker({ placeholder }) {
+export default function RangePicker({ placeholder, dateRange, setDateRange }) {
   const classes = useStyles();
-  const [dateRange, setDateRange] = useState({});
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen(!open);
 
