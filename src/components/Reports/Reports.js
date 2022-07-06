@@ -55,6 +55,7 @@ const Reports = () => {
   const grey600 = theme.palette.grey[600];
 
   const [store, setStore] = useState(null);
+
   const [firstRange, setFirstRange] = useState({});
   const [secondRange, setSecondRange] = useState({});
 
@@ -72,7 +73,7 @@ const Reports = () => {
     },
   ];
 
-  class Convercion {
+  class Conversion {
     constructor(data, cb, [first, second]) {
       this.firstSum = getDataSum(data, first);
       this.secondSum = getDataSum(data, second);
@@ -153,18 +154,26 @@ const Reports = () => {
               ranges={[secondRange, firstRange]}
               series={getDateSeries("purchases")}
             />
-            {/* <ReportCard
-              data={store.purchases}
-              title="Баланс"
-              periods={{ firstRange, secondRange }}
-            />*/}
+            <ReportCard
+              cardName="Баланс"
+              majorText={[
+                getDataSum(secondRangeData.purchases, "value") * 2,
+                prefix.rub,
+              ]}
+              minorText={[
+                getDataSum(firstRangeData.purchases, "value") * 2,
+                prefix.rub,
+              ]}
+              ranges={[secondRange, firstRange]}
+              series={getDateSeries("purchases")}
+            />
             {(() => {
-              const left = new Convercion(
+              const left = new Conversion(
                 secondRangeData.views_to_clicks,
                 clickThroughRate,
                 ["view", "click"]
               );
-              const right = new Convercion(
+              const right = new Conversion(
                 firstRangeData.views_to_clicks,
                 clickThroughRate,
                 ["view", "click"]
@@ -185,11 +194,42 @@ const Reports = () => {
                 />
               );
             })()}
-            {/*<ReportCard
-              data={store.purchases}
-              title="Клики → Продажи"
-              periods={{ firstRange, secondRange }}
-            /> */}
+
+            {(() => {
+              const left = new Conversion(
+                secondRangeData.views_to_clicks,
+                clickThroughRate,
+                ["view", "click"]
+              );
+              const right = new Conversion(
+                firstRangeData.views_to_clicks,
+                clickThroughRate,
+                ["view", "click"]
+              );
+              const pseudoPurchaseLeft = Math.round(left.secondSum / 15);
+              const pseudoPurchaseRight = Math.round(right.secondSum / 15);
+
+              return (
+                <ReportCard
+                  cardName="Клики → Продажи"
+                  majorText={[
+                    Math.round(
+                      clickThroughRate(left.secondSum, pseudoPurchaseLeft)
+                    ),
+                    prefix.percent,
+                  ]}
+                  captures={{
+                    left: `${left.secondSum} → ${pseudoPurchaseLeft}`,
+                    right: `${right.secondSum} → ${pseudoPurchaseRight}`,
+                  }}
+                  ranges={[secondRange, firstRange]}
+                  series={getDateSeries("views_to_clicks", clickThroughRate, [
+                    "view",
+                    "click",
+                  ])}
+                />
+              );
+            })()}
           </>
         )}
       </Box>
