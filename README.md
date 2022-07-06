@@ -1,4 +1,4 @@
-This is a [React](https://nextjs.org/) project that uses:
+This is a React project that uses:
 - react@16
 - material-ui@4
 - webpack@3
