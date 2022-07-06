@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/report-chart/static/css/main.3c4261f2.css",
+    "main.js": "/report-chart/static/js/main.2b8500a1.js",
+    "index.html": "/report-chart/index.html",
+    "main.3c4261f2.css.map": "/report-chart/static/css/main.3c4261f2.css.map",
+    "main.2b8500a1.js.map": "/report-chart/static/js/main.2b8500a1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3c4261f2.css",
+    "static/js/main.2b8500a1.js"
+  ]
+}
