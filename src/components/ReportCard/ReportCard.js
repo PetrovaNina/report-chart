@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
 
 const ReportCard = ({
   cardName,
-  majorText,
+  majorText = [],
   minorText = [],
   captures = {},
   withPercent = false,

@@ -19,6 +19,7 @@ import {
   getDateRangeString,
   formatDataToXY,
   clickThroughRate,
+  getIncrease,
 } from "../../utils";
 
 const useStyles = makeStyles(() => ({
@@ -71,6 +72,14 @@ const Reports = () => {
     },
   ];
 
+  class Convercion {
+    constructor(data, cb, [first, second]) {
+      this.firstSum = getDataSum(data, first);
+      this.secondSum = getDataSum(data, second);
+      this.conversion = cb(this.firstSum, this.secondSum);
+    }
+  }
+
   useEffect(() => {
     fetch("https://wegotrip.com/api/v2/stats/plot")
       .then((res) => res.json())
@@ -89,6 +98,7 @@ const Reports = () => {
 
   const prefix = {
     rub: "₽",
+    percent: "%",
   };
 
   return (
@@ -147,13 +157,35 @@ const Reports = () => {
               data={store.purchases}
               title="Баланс"
               periods={{ firstRange, secondRange }}
-            />
-            <ReportCard
-              data={store.purchases}
-              title="Просмотры → Клики"
-              periods={{ firstRange, secondRange }}
-            />
-            <ReportCard
+            />*/}
+            {(() => {
+              const left = new Convercion(
+                secondRangeData.views_to_clicks,
+                clickThroughRate,
+                ["view", "click"]
+              );
+              const right = new Convercion(
+                firstRangeData.views_to_clicks,
+                clickThroughRate,
+                ["view", "click"]
+              );
+              return (
+                <ReportCard
+                  cardName="Просмотры → Клики"
+                  majorText={[Math.round(left.conversion), prefix.percent]}
+                  captures={{
+                    left: `${left.firstSum} → ${left.secondSum}`,
+                    right: `${right.firstSum} → ${right.secondSum}`,
+                  }}
+                  ranges={[secondRange, firstRange]}
+                  series={getDateSeries("views_to_clicks", clickThroughRate, [
+                    "view",
+                    "click",
+                  ])}
+                />
+              );
+            })()}
+            {/*<ReportCard
               data={store.purchases}
               title="Клики → Продажи"
               periods={{ firstRange, secondRange }}
