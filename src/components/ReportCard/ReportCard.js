@@ -14,16 +14,40 @@ import cn from "classnames";
 import chartFormat from "./chart-format";
 import { getIncrease, roundToDecimals } from "../../utils";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  card: {
+    position: "relative",
+    border: `1px solid ${theme.palette.grey[300]}`,
+    maxWidth: "512px",
+    flex: "1 1 450px",
+    padding: "16px 16px 0 16px",
+    borderRadius: "8px",
+    boxShadow: "none",
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px",
+    overflow: "initial",
+  },
   percent: {
-    backgroundColor: "rgba(154, 255, 158, 0.5)",
+    backgroundColor: theme.palette.semiGreen,
     display: "inline-block",
     justifySelf: "flex-start",
     padding: "0 4px",
     borderRadius: "4px",
   },
   negative: {
-    backgroundColor: "rgba(255, 113, 84, 0.5);",
+    backgroundColor: theme.palette.semiRed,
+  },
+
+  containerCenter: {
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  absoluteCaption: {
+    position: "absolute",
+    width: "calc(100% - 32px)",
+    bottom: "16px",
+    color: theme.palette.grey600,
   },
 }));
 
@@ -37,7 +61,7 @@ const ReportCard = ({
   series,
   ranges,
 }) => {
-  const { percent, negative } = useStyles();
+  const s = useStyles();
   const { startDate, endDate } = ranges[0];
 
   const percentage = getIncrease(majorText[0], minorText[0]);
@@ -49,25 +73,8 @@ const ReportCard = ({
 
   const theme = useTheme();
 
-  const grey600 = theme.palette.grey[600];
-  const grey300 = theme.palette.grey[300];
-
   return (
-    <Card
-      style={{
-        position: "relative",
-        border: `1px solid ${grey300}`,
-        maxWidth: "512px",
-        flex: "1 1 450px",
-        padding: "16px 16px 0 16px",
-        borderRadius: "8px",
-        boxShadow: "none",
-        display: "flex",
-        flexDirection: "column",
-        gap: "4px",
-        overflow: "initial"
-      }}
-    >
+    <Card className={s.card}>
       {!series[0].data.length || !series[1].data.length ? (
         <Typography
           variant="caption"
@@ -81,42 +88,47 @@ const ReportCard = ({
             </Grid>
             <Grid
               container
-              justifyContent="space-between"
-              alignItems="center"
+              className={s.containerCenter}
               style={{ gap: "8px" }}
             >
-              <Typography variant="h4">{majorText}</Typography>
+              <Typography
+                variant="h4"
+                style={{
+                  color: `${
+                    withLegend && theme.palette.darkBlue
+                  }`,
+                }}
+              >
+                {majorText}
+              </Typography>
               {!!percentageText && (
                 <Typography
                   variant="caption"
-                  className={cn(percent, { [negative]: percentage < 0 })}
+                  className={cn(s.percent, { [s.negative]: percentage < 0 })}
                 >
                   {percentageText + "%"}
                 </Typography>
               )}
               <Typography
                 variant="caption"
-                style={{ flexGrow: 1, textAlign: "end" }}
+                style={{
+                  flexGrow: 1,
+                  textAlign: "end",
+                  color: `${
+                    withLegend ? theme.palette.blueText : theme.palette.grey600 
+                  }`,
+                }}
               >
                 {minorText}
               </Typography>
             </Grid>
-            <Grid container justifyContent="space-between" alignItems="center">
+            <Grid container className={s.containerCenter}>
               <Typography variant="caption">{captures.left}</Typography>
-              <Typography variant="caption" style={{ color: grey600 }}>
-                {captures.right}
-              </Typography>
+              <Typography variant="caption">{captures.right}</Typography>
             </Grid>
             <Grid
               container
-              justifyContent="space-between"
-              alignItems="center"
-              style={{
-                position: "absolute",
-                width: "calc(100% - 32px)",
-                bottom: "16px",
-                color: grey600,
-              }}
+              className={cn(s.absoluteCaption, s.containerCenter)}
             >
               <Typography variant="caption">
                 {format(startDate, "D MMMM YYYY")}

@@ -10,9 +10,9 @@ const chartFormat = (colors, series, withLegend, prefix) => ({
         },
       },
     },
-    colors: ["#0B79D0", "rgba(33, 150, 243, 0.5)"],
+    colors: [colors.darkBlue, colors.blueText],
     fill: {
-      colors: ["#64B6F7", "#2196F320"],
+      colors: [colors.blue, colors.lightBlue],
     },
     plotOptions: {
       bar: {
@@ -115,8 +115,8 @@ const chartFormat = (colors, series, withLegend, prefix) => ({
               <span>Click: ${segment.click}</span><br>`
             : "";
 
-        return `${segment1 ? main(segment1, "#0B79D0") : ""} ${
-          segment2 ? main(segment2, "#80beff") : ""
+        return `${segment1 ? main(segment1, colors.blueText) : ""} ${
+          segment2 ? main(segment2, colors.lightBlue) : ""
         }`;
       },
       x: {
