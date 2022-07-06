@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import cn from "classnames";
 
 import chartFormat from "./chart-format";
-import { roundToDecimals } from "../../utils";
+import { getIncrease, roundToDecimals } from "../../utils";
 
 const useStyles = makeStyles(() => ({
   percent: {
@@ -41,7 +41,7 @@ const ReportCard = ({
   const [firstPeriod, secondPeriod] = series;
   const { startDate, endDate } = ranges[1];
 
-  const percentage = (majorText[0] - minorText[0]) / minorText[0];
+  const percentage = getIncrease(majorText[0], minorText[0]);
   const percentageText = !withPercent
     ? false
     : percentage >= 1

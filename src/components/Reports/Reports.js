@@ -9,12 +9,17 @@ import {
 } from "@material-ui/core";
 
 import cn from "classnames";
-import { format } from "date-fns";
 
 import RangePicker from "../RangePicker";
 import ReportCard from "../ReportCard/ReportCard";
 
-import { getDataSum, getRangeData, getDateRangeString } from "../../utils";
+import {
+  getDataSum,
+  getRangeData,
+  getDateRangeString,
+  formatDataToXY,
+  clickThroughRate,
+} from "../../utils";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -54,6 +59,17 @@ const Reports = () => {
 
   const [firstRangeData, setFirstRangeData] = useState(null);
   const [secondRangeData, setSecondRangeData] = useState(null);
+
+  const getDateSeries = (key, cb, params = []) => [
+    {
+      name: getDateRangeString(secondRange),
+      data: formatDataToXY(secondRangeData[key], cb, params),
+    },
+    {
+      name: getDateRangeString(firstRange),
+      data: formatDataToXY(firstRangeData[key], cb, params),
+    },
+  ];
 
   useEffect(() => {
     fetch("https://wegotrip.com/api/v2/stats/plot")
@@ -125,22 +141,7 @@ const Reports = () => {
               withPercent={true}
               withLegend={true}
               ranges={[secondRange, firstRange]}
-              series={[
-                {
-                  name: getDateRangeString(secondRange),
-                  data: secondRangeData.purchases.map((el) => ({
-                    x: format(el.date, "D MMMM"),
-                    y: el.value,
-                  })),
-                },
-                {
-                  name: getDateRangeString(firstRange),
-                  data: firstRangeData.purchases.map((el) => ({
-                    x: format(el.date, "D MMMM"),
-                    y: el.value,
-                  })),
-                },
-              ]}
+              series={getDateSeries("purchases")}
             />
             {/* <ReportCard
               data={store.purchases}
