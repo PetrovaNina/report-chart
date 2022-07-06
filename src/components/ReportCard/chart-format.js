@@ -1,8 +1,15 @@
-const chartFormat = (colors, series, withLegend) => ({
+const chartFormat = (colors, series, withLegend, prefix) => ({
   height: 168,
   type: "bar",
   width: "100%",
   options: {
+    states: {
+      hover: {
+        filter: {
+          type: "none",
+        },
+      },
+    },
     colors: ["#0B79D0", "rgba(33, 150, 243, 0.5)"],
     fill: {
       colors: ["#64B6F7", "#2196F320"],
@@ -91,8 +98,27 @@ const chartFormat = (colors, series, withLegend) => ({
       },
     ],
     tooltip: {
-      shared: true,
-      intersect: false,
+      custom: function ({ dataPointIndex, w }) {
+        const segment1 = w.config.series[0].data[dataPointIndex];
+        const segment2 = w.config.series[1].data[dataPointIndex];
+
+        const main = (segment, color) => `<div>
+        <span style="color: ${color}">${segment.x}</span>
+        <p>${segment.y}${prefix}</p>
+        ${additional(segment)}
+        </div>
+        `;
+
+        const additional = (segment) =>
+          segment.view && segment.click
+            ? `<span>View: ${segment.view}</span><br>
+              <span>Click: ${segment.click}</span><br>`
+            : "";
+
+        return `${segment1 ? main(segment1, "#0B79D0") : ""} ${
+          segment2 ? main(segment2, "#80beff") : ""
+        }`;
+      },
       x: {
         show: false,
       },

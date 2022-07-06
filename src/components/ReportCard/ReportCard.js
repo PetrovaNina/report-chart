@@ -38,8 +38,7 @@ const ReportCard = ({
   ranges,
 }) => {
   const { percent, negative } = useStyles();
-  const [firstPeriod, secondPeriod] = series;
-  const { startDate, endDate } = ranges[1];
+  const { startDate, endDate } = ranges[0];
 
   const percentage = getIncrease(majorText[0], minorText[0]);
   const percentageText = !withPercent
@@ -52,8 +51,6 @@ const ReportCard = ({
 
   const grey600 = theme.palette.grey[600];
   const grey300 = theme.palette.grey[300];
-
-  console.log(series[0].data.length);
 
   return (
     <Card
@@ -68,6 +65,7 @@ const ReportCard = ({
         display: "flex",
         flexDirection: "column",
         gap: "4px",
+        overflow: "initial"
       }}
     >
       {!series[0].data.length || !series[1].data.length ? (
@@ -128,9 +126,9 @@ const ReportCard = ({
               </Typography>
             </Grid>
           </Grid>
-          <Grid item style={{ overflow: "hidden" }}>
+          <Grid item>
             <Chart
-              {...chartFormat(theme.palette, series, withLegend)}
+              {...chartFormat(theme.palette, series, withLegend, majorText[1])}
               style={{ margin: "0 -4px" }}
             />
           </Grid>
