@@ -117,8 +117,8 @@ const chartFormat = (colors, series, withLegend, prefix) => ({
               <span>Click: ${addSpacesToThousands(segment.click)}</span><br>`
             : "";
 
-        return `${segment1 ? main(segment1, colors.blueText) : ""} ${
-          segment2 ? main(segment2, colors.lightBlue) : ""
+        return `${segment1 ? main(segment1, colors.darkBlue) : ""} ${
+          segment2 ? main(segment2, colors.blueText) : ""
         }`;
       },
       x: {
