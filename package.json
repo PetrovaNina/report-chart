@@ -2,8 +2,11 @@
   "name": "report-chart",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://petrovanina.github.io/report-chart/",
   "main": "index.js",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
@@ -35,5 +38,8 @@
     "react-dom": "^16.14.0",
     "react-scripts": "^5.0.1",
     "webpack": "^3.12.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
