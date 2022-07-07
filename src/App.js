@@ -1,5 +1,8 @@
 import { colors, createTheme, ThemeProvider } from "@material-ui/core";
 import { StrictMode } from "react";
+import { Provider } from "react-redux";
+import { store } from "./store";
+
 import Reports from "./components/Reports/Reports";
 
 const theme = createTheme({
@@ -18,9 +21,11 @@ const theme = createTheme({
 
 const App = () => (
   <StrictMode>
-    <ThemeProvider theme={theme}>
-      <Reports />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Reports />
+      </ThemeProvider>
+    </Provider>
   </StrictMode>
 );
 

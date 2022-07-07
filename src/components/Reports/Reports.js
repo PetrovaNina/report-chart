@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Container,
@@ -20,6 +21,9 @@ import {
   formatDataToXY,
   clickThroughRate,
 } from "../../utils";
+
+import { importStats } from "../../store/stats/thunks";
+import { getStatsData } from "../../store/stats/actions";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -47,13 +51,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Reports = () => {
+  const dispatch = useDispatch();
+  const { statsData } = useSelector(getStatsData);
+
   const { container, box, gap16, justifyRight, font14 } = useStyles();
   const center = useMediaQuery("(max-width:1061px)");
 
   const theme = useTheme();
   const grey600 = theme.palette.grey[600];
-
-  const [store, setStore] = useState(null);
 
   const [firstRange, setFirstRange] = useState({});
   const [secondRange, setSecondRange] = useState({});
@@ -81,19 +86,17 @@ const Reports = () => {
   }
 
   useEffect(() => {
-    fetch("https://wegotrip.com/api/v2/stats/plot")
-      .then((res) => res.json())
-      .then((json) => {
-        setStore(json);
-      });
+    dispatch(importStats());
   }, []);
 
   useEffect(() => {
-    firstRange.endDate && setFirstRangeData(getRangeData(store, firstRange));
+    firstRange.endDate &&
+      setFirstRangeData(getRangeData(statsData, firstRange));
   }, [firstRange]);
 
   useEffect(() => {
-    secondRange.endDate && setSecondRangeData(getRangeData(store, secondRange));
+    secondRange.endDate &&
+      setSecondRangeData(getRangeData(statsData, secondRange));
   }, [secondRange]);
 
   const prefix = {
@@ -112,7 +115,7 @@ const Reports = () => {
         })}
         color={grey600}
       >
-        {store && (
+        {statsData && (
           <>
             <RangePicker
               placeholder="First period"
@@ -153,7 +156,7 @@ const Reports = () => {
             <ReportCard
               cardName="Баланс"
               majorText={[
-                (getDataSum(secondRangeData.purchases, "value") * 2.5),
+                getDataSum(secondRangeData.purchases, "value") * 2.5,
                 prefix.rub,
               ]}
               minorText={getDataSum(firstRangeData.purchases, "value") * 1.5}
