@@ -2,6 +2,8 @@ This is a React project that uses:
 - react@16
 - material-ui@4
 - webpack@3
+- redux and redux-thunks
+- jest
 
 ### Running the Application
 
